@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Gyertya Diagram - Energy Price Kijelzés</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      background-image: url("/static/grid_background_soft.png");
+      background-repeat: repeat;
+      background-size: 50px 50px;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+    }
+
+    #chart {
+      width: 1780px;
+      height: 500px;
+      margin-left: 2px;
+      margin-top: 120px;
+      background: transparent;
+      position: absolute;
+
+      z-index: 1;
+    }
+
+    #histogram-chart {
+      width: 1500px;
+      height: 130px; /* vagy amit akarsz, pl. 200px */
+      margin-left: 10px;
+      margin-top: 630px;
+      background: transparent;
+      position: absolute;
+      z-index: 1;
+    }
+
+
+    #profit-chart {
+      position: absolute;
+      top: 335px;       /* ahova el akarod helyezni */
+      left: 5px;        /* az oldal szélétől való távolság */
+      width: 1500px;
+      height: 160px;
+      z-index: 3;
+      pointer-events: none;  /* ha nem akarod, hogy tooltipet kapjon */
+    }
+
+
+    #price-scale {
+      position: absolute;
+      top: 80px;
+      right: 20px;
+      width: 100px;
+      height: 800px;
+      background: transparent;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 300;
+      font-size: 32px;
+      color: #00f0ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 2;
+      padding-left: 10px;
+    }
+
+    #vertical-line {
+      position: absolute;
+      top: -50px;
+      left: -8px;
+      height: 900px;
+      width: 2px;
+      background-color: #00f0ff;
+      z-index: 5;
+    }
+
+    /* Energy Price szövegdoboz */
+    #price-display {
+      position: absolute;
+      top: 30px;
+      left: 1580px;
+      background-color: transparent;
+      padding: 15px 25px;
+      border-radius: 8px;
+      text-align: center;
+      z-index: 5;
+      display: block;
+    }
+
+    #price-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 28px;
+      color: #00f0ff;
+      margin-bottom: 10px;
+    }
+
+    #price-value {
+      font-family: 'Roboto', sans-serif;
+      font-size: 36px;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    #price-unit {
+      font-family: 'Roboto', sans-serif;
+      font-size: 20px;
+      color: #ffffff;
+    }
+
+    /* Tooltip */
+    #tooltip {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.8);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+      pointer-events: none;
+      z-index: 5;
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    /* --- PÖCÖK szabály hozzáadva --- */
+    #price-scale div:not(#vertical-line)::before {
+      content: "";
+      display: inline-block;
+      width: 15px;
+      height: 2px;
+      background-color: #26a69a;
+      margin-right: 2px;
+      position: relative;
+      top: -8px;
+      left: -18px;
+    }
+       /* profit szövegdobozok alapbeállítása */
+    #profit-display, #total-profit-display {
+      position: absolute;
+      left: 1580px; /* ugyanúgy, mint az Energy Price */
+      background-color: transparent;// #121212
+      padding: 15px 20px;
+      border-radius: 8px;
+      text-align: center;
+      z-index: 5;
+      display: block;
+    }
+
+    /* Külön pozíciók */
+    #profit-display {
+      top: 450px; /* Energy Price alatt */
+    }
+
+    #total-profit-display {
+      top: 800px; /* Profit doboz alatt */
+    }
+
+    /* Feliratok (label-ek) */
+    #profit-label, #total-profit-label {
+      font-family: 'Arial', sans-serif;
+      font-size: 28px;
+      color: #00f0ff;
+      margin-bottom: 10px;
+    }
+
+    /* Értékek (value-k) */
+    #profit-value, #total-profit-value {
+      font-family: 'Roboto', sans-serif;
+      font-size: 36px;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    /* Mértékegységek (unit-ok) */
+    #profit-unit  {
+      font-family: 'Roboto', sans-serif;
+      font-size: 40px;
+      color: #1fc8db;
+    }
+
+    #total-profit-unit  {
+      font-family: 'Roboto', sans-serif;
+      font-size: 20px;
+      color: #1fc8db;
+    }
+  </style>
+
+  <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+
+</head>
+<body>
+
+  <div id="chart"></div>
+  <div id="histogram-chart"></div>
+  <div id="profit-chart"></div>
+
+
+  <div id="price-scale">
+    <div id="vertical-line"></div>
+  </div>
+
+  <div id="price-display">
+    <div id="price-label">Energy Price</div>
+    <div id="price-value">--.--</div>
+    <div id="price-unit">Euro/MWh</div>
+  </div>
+
+  <!-- Új: Profit % kijelző -->
+<div id="profit-display">
+  <div id="profit-label">Current Profit:</div>
+  <div>
+    <span id="profit-value">--.--</span><span id="profit-unit"> %</span>
+  </div>
+</div>
+
+
+
+  <!-- Új: Összes profit EUR kijelző -->
+  <div id="total-profit-display">
+    <div id="total-profit-label">Total Revenue:</div>
+    <div id="total-profit-value">1.000.000.195</div>
+    <div id="total-profit-unit">EUR</div>
+  </div>
+
+
+
+  <div id="tooltip"></div>
+
+<script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+
+<script>
+const candlestickChart = LightweightCharts.createChart(document.getElementById('chart'), {
+  layout: {
+    background: { color: 'transparent' }, //#121212
+    textColor: 'transparent', //#26a69a
+    fontSize: 22,                  // 🔹 Ez növeli a skálák és a doboz betűméretét
+    fontFamily: 'Roboto',
+  },
+  grid: {
+    vertLines: { color: 'transparent' },
+    horzLines: { color: 'transparent' },
+  },
+  leftPriceScale: {
+    borderColor: '#121212',
+    fontSize: 18,                  // 🔹 Ez növeli a skálák és a doboz betűméretét
+    visible: true,
+    alignLabels: true,         // 🔹 EZ szorítja ki balra a címkéket
+    scaleMargins: {
+      top: 0,
+      bottom: 0,
+    }
+  },
+  layout: {
+  background: { color: 'transparent' },
+  textColor: '#00f0ff',
+  fontFamily: 'Roboto',
+  },
+  timeScale: {
+    borderColor: '#121212',
+    visible: false,
+    rightOffset: 0,
+    rightOffset: 19,      // 🔥 jobb oldalon helyet hagy
+    fixLeftEdge: false,   // 🔥 bal oldalon is hagy helyet
+    barSpacing: 10,
+  },
+  crosshair: {
+    mode: LightweightCharts.CrosshairMode.Normal,
+  },
+  handleScroll: {
+    mouseWheel: true,
+    pressedMouseMove: true,
+  },
+  handleScale: {
+    axisPressedMouseMove: true,
+    mouseWheel: true,
+    pinch: true,
+  }
+});
+
+const candleSeries = candlestickChart.addCandlestickSeries({
+  priceScaleId: 'left',
+  upColor: '#00f0ff',
+  downColor: '#ef5350',
+  borderUpColor: '#26a69a',
+  borderDownColor: '#ef5350',
+  wickUpColor: '#00f0ff',
+  wickDownColor: '#ef5350',
+});
+
+// 🔵 ÚJ: külön histogram chart az oszlopoknak
+const histogramChart = LightweightCharts.createChart(document.getElementById('histogram-chart'), {
+  width: 1500,
+  height: 350,
+  layout: {
+    background: { color: 'transparent' }, //#121212
+    textColor: 'transparent', //#00f0ff
+    fontFamily: 'Roboto',
+  },
+  grid: {
+    vertLines: { color: 'transparent' },
+    horzLines: { color: 'transparent' },
+  },
+   rightPriceScale: {
+    borderColor: 'transparent', // 🔥 EZ tünteti el a szélét
+  },
+  timeScale: {
+    barSpacing: 15,         // 🟢 ugyanaz a szélesség, mint a gyertyáké!
+    rightOffset: 0,        // 🟢 ugyanakkora hely jobb oldalt
+    borderColor: '#121212',
+    timeVisible: true,
+  },
+});
+
+const histogramSeries = histogramChart.addHistogramSeries({
+  color: 'rgba(0, 240, 255, 0.5)', // 🔥 Neon kék, 50% áttetsző
+  priceFormat: { type: 'volume' },
+});
+
+const profitChart = LightweightCharts.createChart(document.getElementById('profit-chart'), {
+  layout: {
+    background: { color: 'transparent' },  // nincs háttér, a body sötétje látszik át
+    textColor: '#ffffff',
+    fontFamily: 'Roboto',
+  },
+  width: 1780,
+  height: 400,
+  grid: {
+    vertLines: { color: 'rgba(255,255,255,0.0)' },
+    horzLines: { color: 'rgba(255,255,255,0.0)' },
+  },
+  crosshair: {
+    mode: LightweightCharts.CrosshairMode.Normal,
+  },
+  rightPriceScale: {
+    visible: false,
+    borderColor: 'rgba(255,255,255,0.07)', //transparent
+    scaleMargins: {
+      top: 0.1,
+      bottom: 0.1,
+    }
+  },
+  timeScale: {
+    visible: false,
+    borderColor: 'rgba(255,255,255,0.07)', //transparent
+    timeVisible: false,
+    fixLeftEdge: false,
+    rightOffset: 5,
+    barSpacing: 20,
+  },
+  localization: {
+    locale: 'en-US',
+  },
+  handleScroll: {
+    mouseWheel: true,
+    pressedMouseMove: true,
+  },
+  handleScale: {
+    axisPressedMouseMove: true,
+    mouseWheel: true,
+    pinch: true,
+  }
+});
+
+const profitSeries = profitChart.addLineSeries({
+  color: 'rgba(255, 255, 255, 0.8)',  // kicsit áttetsző fehér
+  lineWidth: 4,
+});
+
+
+
+let lastClose = 100;
+
+async function fetchData() {
+  try {
+    const response = await fetch('/api/data');
+    const json = await response.json();
+
+    if (json.chart_candlestick && Array.isArray(json.chart_candlestick)) {
+      const formattedData = json.chart_candlestick.map(item => ({
+        time: item.x,
+        open: item.o,
+        high: item.h,
+        low: item.l,
+        close: item.c
+      }));
+
+      candleSeries.setData(formattedData);
+
+      if (formattedData.length > 0) {
+        lastClose = formattedData[formattedData.length - 1].close;
+      }
+
+      updatePriceScale();
+    } else {
+      console.error('Hibás adatstruktúra:', json);
+    }
+
+    if (json.chart_storage && Array.isArray(json.chart_storage)) {
+      const formattedHistogramData = json.chart_storage.map(item => ({
+        time: item.time,
+        value: item.value
+      }));
+
+      histogramSeries.setData(formattedHistogramData);
+    }
+
+    if (json.chart_profit && Array.isArray(json.chart_profit)) {
+      const formattedProfitData = json.chart_profit.map(item => ({
+        time: item.time,
+        value: item.value
+      }));
+
+    profitSeries.setData(formattedProfitData);
+}
+
+
+    // 🔥 Szöveges adatok frissítése
+    if (json.energy_price !== undefined) {
+      document.getElementById('price-value').textContent = json.energy_price.toFixed(2).replace('.', ',');
+    }
+
+    // 🔥 Dátum adatok frissítése
+    if (json.current_datetime !== undefined) {
+      window.lastDatetimeString = json.current_datetime;
+    }
+
+    if (json.current_profit !== undefined) {
+    document.getElementById('profit-value').textContent = json.current_profit.toFixed(2).replace('.', ',');
+    }
+
+    if (json.total_cash !== undefined) {
+      document.getElementById('total-profit-value').textContent = json.total_cash.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+  } catch (error) {
+    console.error('Hiba az adatok lekérésekor:', error);
+  }
+}
+
+function updatePriceScale() {
+  const scale = document.getElementById('price-scale');
+  if (!scale) return;
+
+  const allDivs = scale.querySelectorAll('div');
+  allDivs.forEach(div => {
+    if (div.id !== 'vertical-line') {
+      div.remove();
+    }
+  });
+    // 🔵 Lekérjük az aktuális dátumot a JSON alapján
+  const currentDateText = window.lastDatetimeString || "2024.01.01 00:00"; // fallback
+
+  const [year, month, day] = currentDateText.split(' ')[0].split('.').map(s => parseInt(s, 10));
+  const baseDate = new Date(year, month - 1, day);
+
+  // 🔵 Kiszámítjuk a 4 előző és 4 következő napot
+  const dates = [];
+  for (let offset = 4; offset >= -4; offset--) {
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() + offset);
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    dates.push(`${mm}.${dd}`);
+  }
+
+  // 🔵 Megjelenítjük őket a skálán
+  for (const label of dates) {
+    const div = document.createElement('div');
+    div.textContent = label;
+    scale.appendChild(div);
+  }
+
+
+
+
+
+/*
+  const rangePercent = 0.05;
+  const min = lastClose * (1 - rangePercent);
+  const max = lastClose * (1 + rangePercent);
+
+  const step = (max - min) / 9;
+
+  for (let i = 0; i <= 9; i++) {
+    const value = (max - i * step).toFixed(2);
+    const div = document.createElement('div');
+    div.textContent = value;
+    scale.appendChild(div);
+  }
+  */
+}
+
+const tooltip = document.getElementById('tooltip');
+
+candlestickChart.subscribeCrosshairMove(function(param) {
+  if (!param || !param.time || !param.seriesPrices) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  const price = param.seriesPrices.get(candleSeries);
+  const time = param.time;
+
+  if (price === undefined) {
+    tooltip.style.display = 'none';
+    return;
+  }
+
+  updatePriceDisplay(price);
+
+  tooltip.style.display = 'block';
+  tooltip.innerHTML = `Ár: ${price.toFixed(2)}<br>Idő: ${formatTime(time)}`;
+});
+
+function formatTime(time) {
+  const date = new Date(time * 1000);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function updatePriceDisplay(price) {
+  const priceValue = document.getElementById('price-value');
+  if (price === undefined) {
+    priceValue.textContent = "--.--";
+  } else {
+    priceValue.textContent = price.toFixed(2).replace('.', ',');
+  }
+}
+
+fetchData();
+setInterval(fetchData, 10000);
+</script>
+
+
+
+</body>
+</html>
