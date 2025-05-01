@@ -393,17 +393,17 @@ async function fetchData() {
   let json = null;
 
   try {
-  const response = await fetch("https://api.enercell.pro/api/data");
-  if (!response.ok) throw new Error("Külső API nem válaszol");
+  const response = await fetch("/api/data");
+  if (!response.ok) throw new Error("Helyi API nem válaszol");
   json = await response.json();
   } catch (error) {
-    console.warn("Külső API sikertelen, próbálkozás belső API-val...");
+    console.warn("Helyi API sikertelen, próbálkozás külső API-val...");
     try {
-      const fallbackResponse = await fetch("/api/data");
-      if (!fallbackResponse.ok) throw new Error("Belső API sem válaszol");
+      const fallbackResponse = await fetch("https://api.enercell.pro/api/data");
+      if (!fallbackResponse.ok) throw new Error("Külső API sem válaszol");
       json = await fallbackResponse.json();
     } catch (finalErr) {
-      console.error("Nem sikerült adatot lekérni egyik forrásból sem.");
+      console.error("Nem sikerült adatot lekérni semelyik forrásból.");
       return;
     }
   }
