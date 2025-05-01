@@ -568,8 +568,9 @@ function updatePriceDisplay(price) {
   }
 }
 
-fetchData();
-setInterval(fetchData, 10000);
+setTimeout(fetchData, 1000);        // 1 mp késéssel elindítjuk az első lekérést
+setInterval(fetchData, 10000);      // minden 10 mp-ben pontosan fut
+
 </script>
 
 
