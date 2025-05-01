@@ -19,6 +19,13 @@
       position: relative;
     }
 
+    #container {
+     width: 1920px;
+     height: 991px;
+     transform-origin: top left;
+     position: absolute;
+    }
+
     #chart {
       width: 1804px;
       height: 500px;
@@ -208,7 +215,7 @@
 
 </head>
 <body>
-
+<div id="container">
   <div id="chart"></div>
   <div id="histogram-chart"></div>
   <div id="profit-chart"></div>
@@ -244,10 +251,32 @@
 
 
   <div id="tooltip"></div>
+<script>
+  function scaleToFit() {
+    const baseWidth = 1920;
+    const baseHeight = 991;
+    const scaleX = window.innerWidth / baseWidth;
+    const scaleY = window.innerHeight / baseHeight;
+    const scale = Math.min(scaleX, scaleY);
+
+    const container = document.getElementById('container');
+    container.style.transform = `scale(${scale})`;
+  }
+
+  window.addEventListener('resize', scaleToFit);
+  window.addEventListener('DOMContentLoaded', scaleToFit);
+</script>
+
+
 
 <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
 
 <script>
+console.log('Aktuális szélesség:', window.innerWidth);
+console.log('Aktuális magasság:', window.innerHeight);
+
+
+
 const candlestickChart = LightweightCharts.createChart(document.getElementById('chart'), {
   layout: {
     background: { color: 'transparent' }, //#121212
@@ -390,6 +419,7 @@ const profitSeries = profitChart.addLineSeries({
 let lastClose = 100;
 
 async function fetchData() {
+  console.log("🔄 fetchData indul:", new Date().toLocaleTimeString());
   let json = null;
 
   try {
