@@ -253,18 +253,30 @@
   <div id="tooltip"></div>
 <script>
   function scaleToFit() {
-    const baseWidth = 1920;
-    const baseHeight = 991;
-    const scaleX = window.innerWidth / baseWidth;
-    const scaleY = window.innerHeight / baseHeight;
+  const baseWidth = 1920;
+  const baseHeight = 991;
+  const currentWidth = window.innerWidth;
+  const currentHeight = window.innerHeight;
+
+  const baseRatio = baseWidth / baseHeight;
+  const currentRatio = currentWidth / currentHeight;
+
+  const container = document.getElementById('container');
+
+  // Ha a képarány közel azonos (±1%), arányosan skáláz
+  if (Math.abs(baseRatio - currentRatio) < 0.01) {
+    const scaleX = currentWidth / baseWidth;
+    const scaleY = currentHeight / baseHeight;
     const scale = Math.min(scaleX, scaleY);
-
-    const container = document.getElementById('container');
     container.style.transform = `scale(${scale})`;
+  } else {
+    // Ha más az arány, torzítva feszít rá
+    const scaleX = currentWidth / baseWidth;
+    const scaleY = currentHeight / baseHeight;
+    container.style.transform = `scale(${scaleX}, ${scaleY})`;
   }
+}
 
-  window.addEventListener('resize', scaleToFit);
-  window.addEventListener('DOMContentLoaded', scaleToFit);
 </script>
 
 
