@@ -2,7 +2,7 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
-  <title>Gyertya Diagram - Energy Price Kijelzés</title>
+  <title>EnerCell</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
@@ -20,14 +20,13 @@
     }
 
     #chart {
-      width: 1780px;
+      width: 1804px;
       height: 500px;
       margin-left: 2px;
-      margin-top: 120px;
+      margin-top: 70px;
       background: transparent;
       position: absolute;
-
-      z-index: 1;
+      z-index: 5;
     }
 
     #histogram-chart {
@@ -47,7 +46,7 @@
       left: 5px;        /* az oldal szélétől való távolság */
       width: 1500px;
       height: 160px;
-      z-index: 3;
+      z-index: 1;
       pointer-events: none;  /* ha nem akarod, hogy tooltipet kapjon */
     }
 
@@ -86,7 +85,7 @@
     #price-display {
       position: absolute;
       top: 30px;
-      left: 1580px;
+      left: 1540px;
       background-color: transparent;
       padding: 15px 25px;
       border-radius: 8px;
@@ -97,21 +96,21 @@
 
     #price-label {
       font-family: 'Arial', sans-serif;
-      font-size: 28px;
+      font-size: 32px;
       color: #00f0ff;
       margin-bottom: 10px;
     }
 
     #price-value {
       font-family: 'Roboto', sans-serif;
-      font-size: 36px;
+      font-size: 38px;
       color: #ffffff;
       margin-bottom: 5px;
     }
 
     #price-unit {
       font-family: 'Roboto', sans-serif;
-      font-size: 20px;
+      font-size: 24px;
       color: #ffffff;
     }
 
@@ -163,16 +162,25 @@
     }
 
     #total-profit-display {
-      top: 800px; /* Profit doboz alatt */
+      top: 750px; /* Profit doboz alatt */
+      left: 1510px;
     }
 
     /* Feliratok (label-ek) */
-    #profit-label, #total-profit-label {
+    #profit-label  {
       font-family: 'Arial', sans-serif;
       font-size: 28px;
       color: #00f0ff;
       margin-bottom: 10px;
     }
+
+    #total-profit-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 35px;
+    color: #00f0ff;
+    margin-bottom: 10px;
+    }
+
 
     /* Értékek (value-k) */
     #profit-value, #total-profit-value {
@@ -191,7 +199,7 @@
 
     #total-profit-unit  {
       font-family: 'Roboto', sans-serif;
-      font-size: 20px;
+      font-size: 23px;
       color: #1fc8db;
     }
   </style>
@@ -374,7 +382,7 @@ const profitChart = LightweightCharts.createChart(document.getElementById('profi
 
 const profitSeries = profitChart.addLineSeries({
   color: 'rgba(255, 255, 255, 0.8)',  // kicsit áttetsző fehér
-  lineWidth: 4,
+  lineWidth: 2.5,
 });
 
 
@@ -382,9 +390,29 @@ const profitSeries = profitChart.addLineSeries({
 let lastClose = 100;
 
 async function fetchData() {
+  let json = null;
+
   try {
-    const response = await fetch('/api/data');
-    const json = await response.json();
+  const response = await fetch("https://api.enercell.pro/api/data");
+  if (!response.ok) throw new Error("Külső API nem válaszol");
+  json = await response.json();
+  } catch (error) {
+    console.warn("Külső API sikertelen, próbálkozás belső API-val...");
+    try {
+      const fallbackResponse = await fetch("/api/data");
+      if (!fallbackResponse.ok) throw new Error("Belső API sem válaszol");
+      json = await fallbackResponse.json();
+    } catch (finalErr) {
+      console.error("Nem sikerült adatot lekérni egyik forrásból sem.");
+      return;
+    }
+  }
+
+
+  if (!json) {
+    console.error("json üres vagy null – a fetch nem adott vissza adatot");
+    return;
+  }
 
     if (json.chart_candlestick && Array.isArray(json.chart_candlestick)) {
       const formattedData = json.chart_candlestick.map(item => ({
@@ -422,7 +450,7 @@ async function fetchData() {
       }));
 
     profitSeries.setData(formattedProfitData);
-}
+  }
 
 
     // 🔥 Szöveges adatok frissítése
@@ -443,9 +471,9 @@ async function fetchData() {
       document.getElementById('total-profit-value').textContent = json.total_cash.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-  } catch (error) {
-    console.error('Hiba az adatok lekérésekor:', error);
-  }
+
+
+
 }
 
 function updatePriceScale() {
