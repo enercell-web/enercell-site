@@ -19,6 +19,30 @@
       position: relative;
     }
 
+  #logo-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.06;
+    filter: brightness(1.3);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  #logo-overlay img {
+    max-width: 40%;
+    height: auto;
+  }
+
+  #main-graph-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+
+
     #container {
      width: 1920px;
      height: 991px;
@@ -26,231 +50,381 @@
      position: absolute;
     }
 
-    #chart {
-      width: 1804px;
-      height: 500px;
-      margin-left: 2px;
-      margin-top: 70px;
-      background: transparent;
-      position: absolute;
-      z-index: 5;
-    }
+  #chart {
+    width: 93.96vw;
+    height: 50.45vh;
+    margin-left: 0.10vw;
+    margin-top: 7.06vh;
+    background: transparent;
+    position: absolute;
+    z-index: 5;
+  }
 
-    #histogram-chart {
-      width: 1500px;
-      height: 130px; /* vagy amit akarsz, pl. 200px */
-      margin-left: 10px;
-      margin-top: 630px;
-      background: transparent;
-      position: absolute;
-      z-index: 1;
-    }
-
-
-    #profit-chart {
-      position: absolute;
-      top: 335px;       /* ahova el akarod helyezni */
-      left: 5px;        /* az oldal szélétől való távolság */
-      width: 1500px;
-      height: 160px;
-      z-index: 1;
-      pointer-events: none;  /* ha nem akarod, hogy tooltipet kapjon */
-    }
+   #histogram-custom {
+    position: absolute;
+    width: 78.13vw;
+    height: 12.52vh;
+    margin-left: 0.52vw;
+    margin-top: 63.59vh;
+    overflow: hidden;
+    z-index: 1;
+    background: transparent;
+  }
 
 
-    #price-scale {
-      position: absolute;
-      top: 80px;
-      right: 20px;
-      width: 100px;
-      height: 800px;
-      background: transparent;
-      font-family: 'Roboto', sans-serif;
-      font-weight: 300;
-      font-size: 32px;
-      color: #00f0ff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-      pointer-events: none;
-      z-index: 2;
-      padding-left: 10px;
-    }
+  #profit-chart {
+    position: absolute;
+    top: 34.80vh;
+    left: 0.26vw;
+    width: 78.13vw;
+    height: 20.14vh;
+    z-index: 1;
+    pointer-events: none;
+  }
 
-    #vertical-line {
-      position: absolute;
-      top: -50px;
-      left: -8px;
-      height: 900px;
-      width: 2px;
-      background-color: #00f0ff;
-      z-index: 5;
-    }
+
+  #price-scale {
+    position: absolute;
+    top: 8.07vh;
+    right: 1.04vw;
+    width: 5.21vw;
+    height: 80.71vh;
+    background: transparent;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    font-size: 1.67vw;
+    color: #00f0ff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 2;
+    padding-left: 0.52vw;
+  }
+
+
+   #vertical-line {
+    position: absolute;
+    top: -5.05vh;
+    left: -0.42vw;
+    height: 90.81vh;
+    width: 0.10vw;
+    background-color: #00f0ff;
+    z-index: 5;
+  }
+
 
     /* Energy Price szövegdoboz */
-    #price-display {
-      position: absolute;
-      top: 30px;
-      left: 1540px;
-      background-color: transparent;
-      padding: 15px 25px;
-      border-radius: 8px;
-      text-align: center;
-      z-index: 5;
-      display: block;
-    }
+  #price-display {
+    position: absolute;
+    top: 3.03vh;
+    left: 80.21vw;
+    background-color: transparent;
+    padding: 1.51vh 1.3vw;
+    border-radius: 8px;
+    text-align: center;
+    z-index: 5;
+    display: block;
+  }
 
-    #price-label {
-      font-family: 'Arial', sans-serif;
-      font-size: 32px;
-      color: #00f0ff;
-      margin-bottom: 10px;
-    }
 
-    #price-value {
-      font-family: 'Roboto', sans-serif;
-      font-size: 38px;
-      color: #ffffff;
-      margin-bottom: 5px;
-    }
+  #price-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 3.23vh;
+    color: #00f0ff;
+    margin-bottom: 1.01vh;
+  }
 
-    #price-unit {
-      font-family: 'Roboto', sans-serif;
-      font-size: 24px;
-      color: #ffffff;
-    }
 
-    /* Tooltip */
-    #tooltip {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: rgba(0, 0, 0, 0.8);
-      color: #ffffff;
-      padding: 8px 12px;
-      border-radius: 4px;
-      font-family: 'Roboto', sans-serif;
-      font-size: 16px;
-      pointer-events: none;
-      z-index: 5;
-      white-space: nowrap;
-      transform: translate(-50%, -50%);
-      display: none;
-    }
+  #price-value {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3.83vh;
+    color: #ffffff;
+    margin-bottom: 0.5vh;
+  }
+
+  #price-unit {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.42vh;
+    color: #ffffff;
+  }
+  #tooltip {
+    position: absolute;
+    top: 0.0vh;
+    left: 0.0vw;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 0.81vh 0.62vw;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.61vh;
+    pointer-events: none;
+    z-index: 5;
+    white-space: nowrap;
+    transform: translate(-50%, -50%);
+    display: none;
+  }
 
     /* --- PÖCÖK szabály hozzáadva --- */
-    #price-scale div:not(#vertical-line)::before {
-      content: "";
-      display: inline-block;
-      width: 15px;
-      height: 2px;
-      background-color: #26a69a;
-      margin-right: 2px;
-      position: relative;
-      top: -8px;
-      left: -18px;
-    }
+   #price-scale div:not(#vertical-line)::before {
+    content: "";
+    display: inline-block;
+    width: 0.78vw;
+    height: 0.2vh;
+    background-color: #26a69a;
+    margin-right: 0.1vw;
+    position: relative;
+    top: -0.81vh;
+    left: -0.94vw;
+  }
+
        /* profit szövegdobozok alapbeállítása */
-    #profit-display, #total-profit-display {
-      position: absolute;
-      left: 1580px; /* ugyanúgy, mint az Energy Price */
-      background-color: transparent;// #121212
-      padding: 15px 20px;
-      border-radius: 8px;
-      text-align: center;
-      z-index: 5;
-      display: block;
-    }
+  #profit-display, #total-profit-display {
+    position: absolute;
+    background-color: transparent;
+    padding: 1.51vh 1.04vw;
+    border-radius: 8px;
+    text-align: center;
+    z-index: 5;
+    display: block;
+  }
 
     /* Külön pozíciók */
-    #profit-display {
-      top: 450px; /* Energy Price alatt */
-    }
+  #profit-display {
+    top: 45.41vh;
+    left: 81.29vw;
+  }
 
-    #total-profit-display {
-      top: 750px; /* Profit doboz alatt */
-      left: 1510px;
-    }
+  #total-profit-display {
+    top: 74.18vh;
+    left: 77.35vw;
+  }
 
     /* Feliratok (label-ek) */
-    #profit-label  {
-      font-family: 'Arial', sans-serif;
-      font-size: 28px;
-      color: #00f0ff;
-      margin-bottom: 10px;
-    }
-
-    #total-profit-label {
+  #profit-label {
     font-family: 'Arial', sans-serif;
-    font-size: 35px;
+    font-size: 2.83vh;
     color: #00f0ff;
-    margin-bottom: 10px;
-    }
+    margin-bottom: 1.01vh;
+  }
+
+
+  #total-profit-label {
+    font-family: 'Arial', sans-serif;
+    font-size: 3.53vh;
+    color: #00f0ff;
+    margin-bottom: 1.01vh;
+  }
+
 
 
     /* Értékek (value-k) */
-    #profit-value, #total-profit-value {
-      font-family: 'Roboto', sans-serif;
-      font-size: 36px;
-      color: #ffffff;
-      margin-bottom: 5px;
-    }
+  #profit-value, #total-profit-value {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3.63vh;
+    color: #ffffff;
+    margin-bottom: 0.5vh;
+  }
+
 
     /* Mértékegységek (unit-ok) */
-    #profit-unit  {
-      font-family: 'Roboto', sans-serif;
-      font-size: 40px;
-      color: #1fc8db;
-    }
+  #profit-unit {
+    font-family: 'Roboto', sans-serif;
+    font-size: 4.04vh;
+    color: #1fc8db;
+  }
 
-    #total-profit-unit  {
-      font-family: 'Roboto', sans-serif;
-      font-size: 23px;
-      color: #1fc8db;
-    }
+  #total-profit-unit {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.32vh;
+    color: #1fc8db;
+  }
+
+  #tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.5);  /* áttetsző fekete */
+  color: #ffffff;
+  padding: 0.5vh 1vw;
+  border-radius: 5px;
+  font-size: 1.4vh;
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  display: none;
+  }
+
+  #stored-value-display {
+    position: absolute;
+    bottom: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.5vh;
+    color: #00f0ff;
+    background-color: rgba(18, 18, 18, 0.8);
+    padding: 0.5vh 1vw;
+    border-radius: 8px;
+    z-index: 9;
+  }
+  #histogram-tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 100;
+    display: none;
+  }
+
+  #histogram-custom {
+    position: absolute;
+    width: 75.13vw;
+    height: 22.52vh;
+    margin-left: 0.52vw;
+    margin-top: 70.59vh;
+    overflow: hidden;
+    z-index: 10;
+    background: transparent;
+  }
+
+  #bars-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    height: auto; /* ez fontos */
+  }
+
+  .bar {
+    width: 1.1vw;
+    margin-right: 0.1vw;
+    border-radius: 3px;
+    background-color: rgba(0, 240, 255, 0.5);
+    transition: height 0.2s ease, background-color 0.2s ease;
+  }
+
+  #background-energy-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .energy-number {
+    font-size: 18vw;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.15); /* erősebb, de még szellem */
+  }
+
+  .energy-unit {
+    font-size: 5vw;
+    font-weight: 400;
+    margin-left: 1vw;
+    color: rgba(255, 255, 255, 0.40); /* halványabb, kisebb */
+  }
+
+  .energy-sub {
+    font-size: 4vw;
+    color: rgba(255, 255, 255, 0.15); /* legszellemibb */
+    letter-spacing: 0.3vw;
+    margin-top: 0vw;
+  }
+
+  #background-energy-value {
+    position: absolute;
+    top: 53.5%;
+    left: 41%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+
+    /* maszkolás: bal oldal erős, jobb oldal elhalványul */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
+    mask-size: 100%;
+    mask-repeat: no-repeat;
+  }
+
+
+
+
   </style>
 
   <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
 
 </head>
 <body>
+
+<div id="main-graph-area">
+  <div id="logo-overlay">
+    <img src="logo.png" alt="EnerCell logo" />
+  </div>
+
+
+<div id="background-energy-value">
+  <div class="energy-sub">automated</div>
+  <span class="energy-number">197.4</span>
+  <span class="energy-unit">MWh</span>
+</div>
+
+
+
+
+
 <div id="container">
   <div id="chart"></div>
-  <div id="histogram-chart"></div>
   <div id="profit-chart"></div>
 
+  <!-- Histogram -->
+  <div id="histogram-custom">
+    <div id="bars-container"></div>
+  </div>
 
+  <!-- Ár-skála -->
   <div id="price-scale">
     <div id="vertical-line"></div>
   </div>
 
+  <!-- Aktuális ár -->
   <div id="price-display">
     <div id="price-label">Energy Price</div>
     <div id="price-value">--.--</div>
     <div id="price-unit">Euro/MWh</div>
   </div>
 
-  <!-- Új: Profit % kijelző -->
-<div id="profit-display">
-  <div id="profit-label">Current Profit:</div>
-  <div>
-    <span id="profit-value">--.--</span><span id="profit-unit"> %</span>
+  <!-- Aktuális profit % -->
+  <div id="profit-display">
+    <div id="profit-label">Current Profit:</div>
+    <div>
+      <span id="profit-value">--.--</span><span id="profit-unit"> %</span>
+    </div>
   </div>
-</div>
 
-
-
-  <!-- Új: Összes profit EUR kijelző -->
+  <!-- Összesített profit EUR -->
   <div id="total-profit-display">
     <div id="total-profit-label">Total Revenue:</div>
     <div id="total-profit-value">1.000.000.195</div>
     <div id="total-profit-unit">EUR</div>
   </div>
 
+  <!-- Tooltip elemek -->
+  <div id="histogram-tooltip"></div>
+  <div id="stored-value-display"></div>
+  <div id="tooltip" style="position:absolute; display:none;"></div>
+</div>
 
 
-  <div id="tooltip"></div>
 <script>
   function scaleToFit() {
   const baseWidth = 1920;
@@ -286,6 +460,8 @@
 <script>
 console.log('Aktuális szélesség:', window.innerWidth);
 console.log('Aktuális magasság:', window.innerHeight);
+let formattedHistogramData = [];
+
 
 
 
@@ -347,38 +523,9 @@ const candleSeries = candlestickChart.addCandlestickSeries({
   wickDownColor: '#ef5350',
 });
 
-// 🔵 ÚJ: külön histogram chart az oszlopoknak
-const histogramChart = LightweightCharts.createChart(document.getElementById('histogram-chart'), {
-  width: 1500,
-  height: 350,
-  layout: {
-    background: { color: 'transparent' }, //#121212
-    textColor: 'transparent', //#00f0ff
-    fontFamily: 'Roboto',
-  },
-  grid: {
-    vertLines: { color: 'transparent' },
-    horzLines: { color: 'transparent' },
-  },
-   rightPriceScale: {
-    borderColor: 'transparent', // 🔥 EZ tünteti el a szélét
-  },
-  timeScale: {
-    barSpacing: 15,         // 🟢 ugyanaz a szélesség, mint a gyertyáké!
-    rightOffset: 0,        // 🟢 ugyanakkora hely jobb oldalt
-    borderColor: '#121212',
-    timeVisible: true,
-  },
-});
-
-const histogramSeries = histogramChart.addHistogramSeries({
-  color: 'rgba(0, 240, 255, 0.5)', // 🔥 Neon kék, 50% áttetsző
-  priceFormat: { type: 'volume' },
-});
-
 const profitChart = LightweightCharts.createChart(document.getElementById('profit-chart'), {
   layout: {
-    background: { color: 'transparent' },  // nincs háttér, a body sötétje látszik át
+    background: { color: 'transparent' },
     textColor: '#ffffff',
     fontFamily: 'Roboto',
   },
@@ -390,26 +537,23 @@ const profitChart = LightweightCharts.createChart(document.getElementById('profi
   },
   crosshair: {
     mode: LightweightCharts.CrosshairMode.Normal,
+    horzLine: { visible: false },
+    vertLine: { visible: false },
   },
   rightPriceScale: {
     visible: false,
-    borderColor: 'rgba(255,255,255,0.07)', //transparent
-    scaleMargins: {
-      top: 0.1,
-      bottom: 0.1,
-    }
+    borderColor: 'rgba(255,255,255,0.07)',
+    scaleMargins: { top: 0.1, bottom: 0.1 },
   },
   timeScale: {
     visible: false,
-    borderColor: 'rgba(255,255,255,0.07)', //transparent
+    borderColor: 'rgba(255,255,255,0.07)',
     timeVisible: false,
     fixLeftEdge: false,
     rightOffset: 5,
     barSpacing: 20,
   },
-  localization: {
-    locale: 'en-US',
-  },
+  localization: { locale: 'en-US' },
   handleScroll: {
     mouseWheel: true,
     pressedMouseMove: true,
@@ -421,9 +565,22 @@ const profitChart = LightweightCharts.createChart(document.getElementById('profi
   }
 });
 
+
+
+// 🔵 ÚJ: külön histogram chart az oszlopoknak
+
+const histogramTooltip = document.getElementById('histogram-tooltip');
+
+    if (!histogramTooltip) {
+      console.error("🚨 Nincs 'histogram-tooltip' elem a DOM-ban!");
+    }
+
+
+
 const profitSeries = profitChart.addLineSeries({
-  color: 'rgba(255, 255, 255, 0.8)',  // kicsit áttetsző fehér
+  color: 'rgba(255, 255, 255, 1.0)',  // kicsit áttetsző fehér
   lineWidth: 2.5,
+  priceLineVisible: false       // ⛔ EZ TILTAJA LE a kis vízszintes vonalat
 });
 
 
@@ -477,22 +634,72 @@ async function fetchData() {
     }
 
     if (json.chart_storage && Array.isArray(json.chart_storage)) {
-      const formattedHistogramData = json.chart_storage.map(item => ({
-        time: item.time,
-        value: item.value
-      }));
-
-      histogramSeries.setData(formattedHistogramData);
+      renderCustomHistogram(json.chart_storage);
+      updateBackgroundEnergyDisplay(json.chart_storage); // 🔥 hozzáadva
     }
 
-    if (json.chart_profit && Array.isArray(json.chart_profit)) {
-      const formattedProfitData = json.chart_profit.map(item => ({
-        time: item.time,
-        value: item.value
-      }));
 
-    profitSeries.setData(formattedProfitData);
-  }
+
+/*
+ if (json.chart_storage && Array.isArray(json.chart_storage)) {
+  const windowSize = 12; // 6 órás mozgó ablak
+  const rawData = json.chart_storage;
+
+  formattedHistogramData = rawData.map((item, index) => {
+    const from = Math.max(0, index - windowSize + 1);
+    const slice = rawData.slice(from, index + 1);
+    const values = slice.map(d => d.value);
+    const localMin = Math.min(...values);
+    const localMax = Math.max(...values);
+
+    // Stabilizált tartomány: legalább 10 legyen a range
+    const rawRange = localMax - localMin;
+    const range = Math.max(rawRange, 10);
+
+    const normalizedValue = (item.value - localMin) / range;
+
+    // Növekedés/csökkenés szín + áttetszőség
+    const prev = rawData[index - 1]?.value ?? item.value;
+    const diff = item.value - prev;
+
+    const opacity = 0.3 + Math.min(Math.abs(diff) / 10, 0.7);
+    const baseColor = diff >= 0
+      ? `rgba(0, 240, 255, ${opacity.toFixed(2)})`   // növekedés – kék
+      : `rgba(255, 100, 100, ${opacity.toFixed(2)})`; // csökkenés – piros
+
+    return {
+      time: item.time,
+      value: normalizedValue,
+      originalValue: item.value,
+      color: baseColor
+    };
+  });
+
+  // histogramSeries.setData(formattedHistogramData);
+}
+*/
+
+
+    if (json.chart_profit && Array.isArray(json.chart_profit)) {
+      const maxSteps = 84;        // 9 órányi adat
+      const minOpacity = 0.05;    // legalacsonyabb áttetszőség
+      const latestIndex = json.chart_profit.length - 1;
+
+      const formattedProfitData = json.chart_profit.map((item, index) => {
+        const distance = latestIndex - index;
+        const fadeFactor = Math.min(distance / maxSteps, 1);
+        const opacity = 1 - fadeFactor * (1 - minOpacity);
+
+        return {
+          time: item.time,
+          value: item.value,
+          color: `rgba(255, 255, 255, ${opacity.toFixed(3)})`
+        };
+      });
+
+      profitSeries.setData(formattedProfitData);
+    }
+
 
 
     // 🔥 Szöveges adatok frissítése
@@ -514,10 +721,24 @@ async function fetchData() {
     }
 
 
+}
+//
+function updateBackgroundEnergyDisplay(data) {
+  if (!Array.isArray(data) || data.length === 0) return;
 
+  const latest = data[data.length - 1];
+  const total = typeof latest.value === "number" ? latest.value : 0;
 
+  const display = document.querySelector(".energy-number");
+  if (display) {
+    display.textContent = total.toFixed(1);
+  }
 }
 
+
+
+
+//
 function updatePriceScale() {
   const scale = document.getElementById('price-scale');
   if (!scale) return;
@@ -545,11 +766,23 @@ function updatePriceScale() {
   }
 
   // 🔵 Megjelenítjük őket a skálán
-  for (const label of dates) {
+   for (let i = 0; i < dates.length; i++) {
+    const label = dates[i];
+    const distance = Math.abs(i - 4); // 4 a középső, az aktuális nap
+    const opacity = 1 - distance * 0.15;  // minél messzebb, annál áttetszőbb
+    const scaleFactor = 1 - distance * 0.1; // minél messzebb, annál kisebb
+
     const div = document.createElement('div');
     div.textContent = label;
+
+    div.style.opacity = opacity.toFixed(2);
+    div.style.transform = `scale(${scaleFactor.toFixed(2)})`;
+    div.style.transformOrigin = 'center center';
+    div.style.transition = 'all 0.3s ease';
+
     scale.appendChild(div);
   }
+
 
 
 
@@ -610,6 +843,42 @@ function updatePriceDisplay(price) {
   }
 }
 
+function renderCustomHistogram(data) {
+  const container = document.getElementById("bars-container");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const scaleFactor = 25;
+  const last65 = data.slice(-65); // időrend: régi → új
+
+  let maxValue = 0;
+
+  for (let i = 0; i < last65.length; i++) {
+    const current = last65[i];
+    if (!current || typeof current.value !== "number") continue;
+
+    maxValue = Math.max(maxValue, current.value);
+
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    bar.style.height = `${current.value * scaleFactor}px`;
+    const alpha = 0.2 + (i / last65.length) * 0.6;
+    bar.style.backgroundColor = `rgba(0, 240, 255, ${alpha})`;
+
+    bar.title = `${current.value.toFixed(2)} MWh`;
+    bar.style.marginRight = "3.7px"; // vagy ahány px távolságot szeretnél
+    container.appendChild(bar);
+  }
+
+  // semmi containerHeight, semmi flex, semmi alignItems
+  // csak ha tényleg szükséges, akkor maszkolunk (ez opcionális):
+  const maskHeight = document.getElementById("histogram-custom").offsetHeight;
+  const shiftY = container.offsetHeight - maskHeight;
+  container.style.transform = `translateY(${shiftY}px)`;
+}
+
+
+
 setTimeout(fetchData, 1000);        // 1 mp késéssel elindítjuk az első lekérést
 setInterval(fetchData, 10000);      // minden 10 mp-ben pontosan fut
 
@@ -617,5 +886,4 @@ setInterval(fetchData, 10000);      // minden 10 mp-ben pontosan fut
 
 
 
-</body>
 </html>
