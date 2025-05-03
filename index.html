@@ -74,10 +74,10 @@
 
   #profit-chart {
     position: absolute;
-    top: 34.80vh;
+    top: 37.20vh;
     left: 0.26vw;
-    width: 78.13vw;
-    height: 20.14vh;
+    width: 92.7vw;
+    height: 37.0vh;
     z-index: 1;
     pointer-events: none;
   }
@@ -310,13 +310,19 @@
 
   #background-energy-value {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: calc(50% - 2.5vw);
+    left: 41%;
     transform: translate(-50%, -50%);
     z-index: 0;
     pointer-events: none;
     text-align: center;
     white-space: nowrap;
+
+    /* maszkolás: bal oldal erős, jobb oldal elhalványul */
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
+    mask-size: 100%;
+    mask-repeat: no-repeat;
   }
 
   .energy-number {
@@ -333,30 +339,15 @@
   }
 
   .energy-sub {
+
+    top: calc(50% - 32.2vw);
+    left: 50%;
     font-size: 4vw;
     color: rgba(255, 255, 255, 0.15); /* legszellemibb */
     letter-spacing: 0.3vw;
     margin-top: 0vw;
+    margin-bottom: 8vw; /* vagy px, pl. 20px */
   }
-
-  #background-energy-value {
-    position: absolute;
-    top: 53.5%;
-    left: 41%;
-    transform: translate(-50%, -50%);
-    z-index: 0;
-    pointer-events: none;
-    text-align: center;
-    white-space: nowrap;
-
-    /* maszkolás: bal oldal erős, jobb oldal elhalványul */
-    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
-    mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0.2) 100%);
-    mask-size: 100%;
-    mask-repeat: no-repeat;
-  }
-
-
 
 
   </style>
@@ -523,14 +514,13 @@ const candleSeries = candlestickChart.addCandlestickSeries({
   wickDownColor: '#ef5350',
 });
 
+
 const profitChart = LightweightCharts.createChart(document.getElementById('profit-chart'), {
   layout: {
     background: { color: 'transparent' },
     textColor: '#ffffff',
     fontFamily: 'Roboto',
   },
-  width: 1780,
-  height: 400,
   grid: {
     vertLines: { color: 'rgba(255,255,255,0.0)' },
     horzLines: { color: 'rgba(255,255,255,0.0)' },
