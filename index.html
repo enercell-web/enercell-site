@@ -120,7 +120,7 @@
 
   #vertical-fade-bottom {
     position: absolute;
-    top: 90.51vh; /* igazítsd a vízszintes vonalhoz */
+    top: 91vh; /* igazítsd a vízszintes vonalhoz */
     left: -0.42vw;
     width: 0.1vw;
     height: 6.5vh;
@@ -133,17 +133,17 @@
 
   #bottom-horizontal-line {
     position: absolute;
-    bottom: 6.2vh;        /* finoman a hisztogram fölé */
+    top: 93.71vh;        /* finoman a hisztogram fölé */
     left: 75.53vw;           /* ne a legszélről induljon */
     width: 17.3vw;         /* majdnem végigérjen */
-    height: 0.13vh;
+    height: 0.2vh;
     background-color: #00f0ff;
     z-index: 4;
   }
 
   #fading-line-left {
     position: absolute;
-    bottom: 6.2vh; /* ugyanaz, mint a vízszintes vonal, vagy: 70.59vh + 23.25vh - kis finomhangolás */
+    top: 93.71vh; /* ugyanaz, mint a vízszintes vonal, vagy: 70.59vh + 23.25vh - kis finomhangolás */
     left: 0.53vw;  /* ugyanott indul, mint a histogram */
     width: 75.53vw;
     height: 0.2vh;
@@ -531,7 +531,7 @@
 }
 
 </script>
-  
+
 <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
 
 <script>
