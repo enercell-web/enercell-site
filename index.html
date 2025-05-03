@@ -54,25 +54,13 @@
 
   #chart {
     width: 93.96vw;
-    height: 50.45vh;
+    height: 57.45vh;
     margin-left: 0.10vw;
     margin-top: 7.06vh;
     background: transparent;
     position: absolute;
     z-index: 5;
   }
-/*
-   #histogram-custom {
-    position: absolute;
-    width: 78.13vw;
-    height: 12.52vh;
-    margin-left: 0.52vw;
-    margin-top: 63.59vh;
-    overflow: hidden;
-    z-index: 1;
-    background: transparent;
-  }
-*/
 
   #profit-chart {
     position: absolute;
@@ -543,18 +531,13 @@
 }
 
 </script>
-
-
-
+  
 <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
 
 <script>
 console.log('Aktuális szélesség:', window.innerWidth);
 console.log('Aktuális magasság:', window.innerHeight);
 let formattedHistogramData = [];
-
-
-
 
 const candlestickChart = LightweightCharts.createChart(document.getElementById('chart'), {
   layout: {
@@ -655,9 +638,6 @@ const profitChart = LightweightCharts.createChart(document.getElementById('profi
     pinch: true,
   }
 });
-
-
-
 // 🔵 ÚJ: külön histogram chart az oszlopoknak
 
 const histogramTooltip = document.getElementById('histogram-tooltip');
@@ -666,15 +646,11 @@ const histogramTooltip = document.getElementById('histogram-tooltip');
       console.error("🚨 Nincs 'histogram-tooltip' elem a DOM-ban!");
     }
 
-
-
 const profitSeries = profitChart.addLineSeries({
   color: 'rgba(255, 255, 255, 1.0)',  // kicsit áttetsző fehér
   lineWidth: 2.5,
   priceLineVisible: false       // ⛔ EZ TILTAJA LE a kis vízszintes vonalat
 });
-
-
 
 let lastClose = 100;
 
@@ -745,46 +721,6 @@ async function fetchData() {
 
 
 
-/*
- if (json.chart_storage && Array.isArray(json.chart_storage)) {
-  const windowSize = 12; // 6 órás mozgó ablak
-  const rawData = json.chart_storage;
-
-  formattedHistogramData = rawData.map((item, index) => {
-    const from = Math.max(0, index - windowSize + 1);
-    const slice = rawData.slice(from, index + 1);
-    const values = slice.map(d => d.value);
-    const localMin = Math.min(...values);
-    const localMax = Math.max(...values);
-
-    // Stabilizált tartomány: legalább 10 legyen a range
-    const rawRange = localMax - localMin;
-    const range = Math.max(rawRange, 10);
-
-    const normalizedValue = (item.value - localMin) / range;
-
-    // Növekedés/csökkenés szín + áttetszőség
-    const prev = rawData[index - 1]?.value ?? item.value;
-    const diff = item.value - prev;
-
-    const opacity = 0.3 + Math.min(Math.abs(diff) / 10, 0.7);
-    const baseColor = diff >= 0
-      ? `rgba(0, 240, 255, ${opacity.toFixed(2)})`   // növekedés – kék
-      : `rgba(255, 100, 100, ${opacity.toFixed(2)})`; // csökkenés – piros
-
-    return {
-      time: item.time,
-      value: normalizedValue,
-      originalValue: item.value,
-      color: baseColor
-    };
-  });
-
-  // histogramSeries.setData(formattedHistogramData);
-}
-*/
-
-
     if (json.chart_profit && Array.isArray(json.chart_profit)) {
       const maxSteps = 84;        // 9 órányi adat
       const minOpacity = 0.05;    // legalacsonyabb áttetszőség
@@ -822,7 +758,7 @@ async function fetchData() {
 
 
 }
-//
+
 function updateBackgroundEnergyDisplay(data) {
   if (!Array.isArray(data) || data.length === 0) return;
 
@@ -835,10 +771,6 @@ function updateBackgroundEnergyDisplay(data) {
   }
 }
 
-
-
-
-//
 function updatePriceScale() {
   const scale = document.getElementById('price-scale');
   if (!scale) return;
@@ -878,21 +810,6 @@ function updatePriceScale() {
 
     scale.appendChild(div);
   }
-
-/*
-  const rangePercent = 0.05;
-  const min = lastClose * (1 - rangePercent);
-  const max = lastClose * (1 + rangePercent);
-
-  const step = (max - min) / 9;
-
-  for (let i = 0; i <= 9; i++) {
-    const value = (max - i * step).toFixed(2);
-    const div = document.createElement('div');
-    div.textContent = value;
-    scale.appendChild(div);
-  }
-  */
 }
 
 const tooltip = document.getElementById('tooltip');
@@ -962,20 +879,14 @@ function renderCustomHistogram(data) {
 
     container.appendChild(bar);
   }
-
   // konténer eltolása függőlegesen: csak ha kilóg
   const maskHeight = document.getElementById("histogram-custom").offsetHeight;
   const shiftY = container.offsetHeight - maskHeight;
   container.style.transform = `translateY(${shiftY}px)`;
 }
 
-
-
 setTimeout(fetchData, 1000);        // 1 mp késéssel elindítjuk az első lekérést
 setInterval(fetchData, 10000);      // minden 10 mp-ben pontosan fut
 
 </script>
-
-
-
 </html>
