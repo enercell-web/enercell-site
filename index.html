@@ -2,19 +2,23 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
   <title>EnerCell</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
 
   <style>
-    body {
+    html,   body {
       margin: 0;
       padding: 0;
       background-color: #121212;
       background-image: url("/static/grid_background_soft.png");
       background-repeat: repeat;
       background-size: 50px 50px;
-      height: 100vh;
+      height: 100%;
       font-family: 'Roboto', sans-serif;
       position: relative;
     }
@@ -41,14 +45,12 @@
     height: 100%;
   }
 
-
-
-    #container {
-     width: 100vw;
-     height: 100vh;
-     transform-origin: top left;
-     position: absolute;
-    }
+  #container {
+   width: 100vw;
+   height: 100 %;
+   transform-origin: top left;
+   position: absolute;
+  }
 
   #chart {
     width: 93.96vw;
@@ -59,7 +61,7 @@
     position: absolute;
     z-index: 5;
   }
-
+/*
    #histogram-custom {
     position: absolute;
     width: 78.13vw;
@@ -70,7 +72,7 @@
     z-index: 1;
     background: transparent;
   }
-
+*/
 
   #profit-chart {
     position: absolute;
@@ -85,10 +87,10 @@
 
   #price-scale {
     position: absolute;
-    top: 8.07vh;
+    top: 2.57vh;
     right: 1.04vw;
     width: 5.21vw;
-    height: 80.71vh;
+    height: 91.21vh;
     background: transparent;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
@@ -106,12 +108,64 @@
 
    #vertical-line {
     position: absolute;
-    top: -5.05vh;
+    top: 2.85vh;
     left: -0.42vw;
-    height: 90.81vh;
+    height: 88.41vh;
     width: 0.10vw;
     background-color: #00f0ff;
+    z-index: 2;
+  }
+
+
+  #vertical-fade-top {
+    position: absolute;
+    top: -1.65vh; /* finoman állítsd be */
+    left: -0.42vw; /* középre igazítva a vonalhoz */
+    width: 0.1vw;
+    height: 4.5vh;
+    background: linear-gradient(to top,
+      rgba(0, 240, 255, 1.0),
+      rgba(0, 240, 255, 0.0)
+    );
     z-index: 5;
+  }
+
+  #vertical-fade-bottom {
+    position: absolute;
+    top: 90.51vh; /* igazítsd a vízszintes vonalhoz */
+    left: -0.42vw;
+    width: 0.1vw;
+    height: 6.5vh;
+    background: linear-gradient(to bottom,
+      rgba(0, 240, 255, 1.0),
+      rgba(0, 240, 255, 0.2)
+    );
+    z-index: 5;
+  }
+
+  #bottom-horizontal-line {
+    position: absolute;
+    bottom: 6.2vh;        /* finoman a hisztogram fölé */
+    left: 75.53vw;           /* ne a legszélről induljon */
+    width: 17.3vw;         /* majdnem végigérjen */
+    height: 0.13vh;
+    background-color: #00f0ff;
+    z-index: 4;
+  }
+
+  #fading-line-left {
+    position: absolute;
+    bottom: 6.2vh; /* ugyanaz, mint a vízszintes vonal, vagy: 70.59vh + 23.25vh - kis finomhangolás */
+    left: 0.53vw;  /* ugyanott indul, mint a histogram */
+    width: 75.53vw;
+    height: 0.2vh;
+    background: linear-gradient(to left,
+      rgba(0, 240, 255, 1.0) 0%,
+      rgba(0, 240, 255, 0.3) 30%,
+      rgba(0, 240, 255, 0.1) 100%
+    );
+    z-index: 2;
+    pointer-events: none;
   }
 
 
@@ -167,7 +221,7 @@
   }
 
     /* --- PÖCÖK szabály hozzáadva --- */
-   #price-scale div:not(#vertical-line)::before {
+  #price-scale div:not(#vertical-line):not(#vertical-fade-top):not(#vertical-fade-bottom)::before {
     content: "";
     display: inline-block;
     width: 0.78vw;
@@ -283,7 +337,7 @@
   #histogram-custom {
     position: absolute;
     width: 75.13vw;
-    height: 22.52vh;
+    height: 23.25vh;
     margin-left: 0.52vw;
     margin-top: 70.59vh;
     overflow: hidden;
@@ -310,9 +364,9 @@
 
   #background-energy-value {
     position: absolute;
-    top: calc(50% - 2.5vw);
-    left: 41%;
-    transform: translate(-50%, -50%);
+    top: 12.3%;
+    left: 12.9%;
+    transform: none;
     z-index: 0;
     pointer-events: none;
     text-align: center;
@@ -339,15 +393,43 @@
   }
 
   .energy-sub {
-
-    top: calc(50% - 32.2vw);
-    left: 50%;
-    font-size: 4vw;
-    color: rgba(255, 255, 255, 0.15); /* legszellemibb */
+    //top: 50%;
+    //left: 41%;
+    font-family: 'Orbitron', sans-serif; /* futurisztikus, tech-hatású */
+    font-size: 3.8vw;
+    color: rgba(255, 255, 255, 0.12);  /* szellemszerű, finom */
     letter-spacing: 0.3vw;
     margin-top: 0vw;
     margin-bottom: 8vw; /* vagy px, pl. 20px */
   }
+
+  #footer-info {
+    position: absolute;
+    top: 95.8vh;
+    left: 0.5vw;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5vh;
+    color: rgba(0, 240, 255, 0.3);
+    z-index: 4;
+    letter-spacing: 0.1vw;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  #footer-date {
+    position: absolute;
+    top: 95.3vh;
+    left: 79.53vw;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2vh;
+    color: rgba(0, 240, 255, 0.3);
+    z-index: 4;
+    letter-spacing: 0.1vw;
+    pointer-events: none;
+    user-select: none;
+  }
+
+
 
 
   </style>
@@ -358,13 +440,18 @@
 <body>
 
 <div id="main-graph-area">
+
+      <div id="fading-line-left"></div>
+      <div id="bottom-horizontal-line"></div>
+
+
   <div id="logo-overlay">
     <img src="logo.png" alt="EnerCell logo" />
   </div>
 
 
 <div id="background-energy-value">
-  <div class="energy-sub">automated</div>
+  <div class="energy-sub">Logic Core</div>
   <span class="energy-number">197.4</span>
   <span class="energy-unit">MWh</span>
 </div>
@@ -385,6 +472,8 @@
   <!-- Ár-skála -->
   <div id="price-scale">
     <div id="vertical-line"></div>
+    <div id="vertical-fade-top"></div>
+    <div id="vertical-fade-bottom"></div>
   </div>
 
   <!-- Aktuális ár -->
@@ -413,6 +502,17 @@
   <div id="histogram-tooltip"></div>
   <div id="stored-value-display"></div>
   <div id="tooltip" style="position:absolute; display:none;"></div>
+
+  <div id="footer-info">
+    <span id="location-label">Plant Location: </span>
+    <span id="location-value">GPS 47.33821, 18.98540</span>
+  </div>
+
+  <div id="footer-date">
+    <span id="sim-date-label">Sim. date: </span>
+    <span id="sim-date-value">2025.02.21</span>
+  </div>
+
 </div>
 
 
@@ -503,6 +603,7 @@ const candlestickChart = LightweightCharts.createChart(document.getElementById('
     pinch: true,
   }
 });
+
 
 const candleSeries = candlestickChart.addCandlestickSeries({
   priceScaleId: 'left',
@@ -597,6 +698,11 @@ async function fetchData() {
     }
   }
 
+    // 🔥 Dátum adatok frissítése
+  if (json.current_datetime !== undefined) {
+    window.lastDatetimeString = json.current_datetime;
+    document.getElementById('sim-date-value').textContent = json.current_datetime.split(' ')[0];
+  }
 
   if (!json) {
     console.error("json üres vagy null – a fetch nem adott vissza adatot");
@@ -615,10 +721,19 @@ async function fetchData() {
       candleSeries.setData(formattedData);
 
       if (formattedData.length > 0) {
+        const lastCandle = json.chart_candlestick[json.chart_candlestick.length - 1];
+
+        if (lastCandle && lastCandle.datetime) {
+          window.lastDatetimeString = lastCandle.datetime;
+          document.getElementById('sim-date-value').textContent = lastCandle.datetime.split(' ')[0];
+        }
+
         lastClose = formattedData[formattedData.length - 1].close;
+        updatePriceScale();
       }
 
-      updatePriceScale();
+      candleSeries.setData(formattedData);
+
     } else {
       console.error('Hibás adatstruktúra:', json);
     }
@@ -697,11 +812,6 @@ async function fetchData() {
       document.getElementById('price-value').textContent = json.energy_price.toFixed(2).replace('.', ',');
     }
 
-    // 🔥 Dátum adatok frissítése
-    if (json.current_datetime !== undefined) {
-      window.lastDatetimeString = json.current_datetime;
-    }
-
     if (json.current_profit !== undefined) {
     document.getElementById('profit-value').textContent = json.current_profit.toFixed(2).replace('.', ',');
     }
@@ -733,50 +843,41 @@ function updatePriceScale() {
   const scale = document.getElementById('price-scale');
   if (!scale) return;
 
+  // Töröljük az előző skálaelemeket (kivéve a fix ID-ket)
   const allDivs = scale.querySelectorAll('div');
   allDivs.forEach(div => {
-    if (div.id !== 'vertical-line') {
+    if (!['vertical-line', 'vertical-fade-top', 'vertical-fade-bottom'].includes(div.id)) {
       div.remove();
     }
   });
-    // 🔵 Lekérjük az aktuális dátumot a JSON alapján
-  const currentDateText = window.lastDatetimeString || "2024.01.01 00:00"; // fallback
 
-  const [year, month, day] = currentDateText.split(' ')[0].split('.').map(s => parseInt(s, 10));
-  const baseDate = new Date(year, month - 1, day);
+  // 🔵 Lekérjük az aktuális szimulációs dátumot, pl: "2025.02.22 13:45"
+  const raw = window.lastDatetimeString || "2025.01.01 12:00";
+  const [datePart, timePart] = raw.split(' ');
+  const [year, month, day] = datePart.split('.').map(Number);
+  const [hour, minute] = (timePart || "00:00").split(':').map(Number);
 
-  // 🔵 Kiszámítjuk a 4 előző és 4 következő napot
-  const dates = [];
+  const base = new Date(year, month - 1, day, hour, minute);
+
+  // 🔁 4 időpont később, 4 korábban, középen az aktuális
   for (let offset = 4; offset >= -4; offset--) {
-    const d = new Date(baseDate);
-    d.setDate(d.getDate() + offset);
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    dates.push(`${mm}.${dd}`);
-  }
+    const d = new Date(base);
+    d.setMinutes(d.getMinutes() + offset * 15);
 
-  // 🔵 Megjelenítjük őket a skálán
-   for (let i = 0; i < dates.length; i++) {
-    const label = dates[i];
-    const distance = Math.abs(i - 4); // 4 a középső, az aktuális nap
-    const opacity = 1 - distance * 0.15;  // minél messzebb, annál áttetszőbb
-    const scaleFactor = 1 - distance * 0.1; // minél messzebb, annál kisebb
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    const label = `${hh}:${mm}`;
 
     const div = document.createElement('div');
+    const distance = Math.abs(offset);
     div.textContent = label;
-
-    div.style.opacity = opacity.toFixed(2);
-    div.style.transform = `scale(${scaleFactor.toFixed(2)})`;
+    div.style.opacity = (1 - distance * 0.15).toFixed(2);
+    div.style.transform = `scale(${(1 - distance * 0.1).toFixed(2)})`;
     div.style.transformOrigin = 'center center';
     div.style.transition = 'all 0.3s ease';
 
     scale.appendChild(div);
   }
-
-
-
-
-
 
 /*
   const rangePercent = 0.05;
