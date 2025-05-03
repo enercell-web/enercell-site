@@ -838,8 +838,8 @@ function renderCustomHistogram(data) {
   if (!container) return;
   container.innerHTML = "";
 
-  const scaleFactor = 25;
-  const last65 = data.slice(-65); // időrend: régi → új
+  const scaleFactor = 25; // MWh → px átváltás (maradhat így, mert a magasság relatív)
+  const last65 = data.slice(-65); // utolsó 65 adat – időrendben
 
   let maxValue = 0;
 
@@ -852,16 +852,17 @@ function renderCustomHistogram(data) {
     const bar = document.createElement("div");
     bar.className = "bar";
     bar.style.height = `${current.value * scaleFactor}px`;
+
+    // áttetszőség fokozása balról jobbra
     const alpha = 0.2 + (i / last65.length) * 0.6;
     bar.style.backgroundColor = `rgba(0, 240, 255, ${alpha})`;
 
     bar.title = `${current.value.toFixed(2)} MWh`;
-    bar.style.marginRight = "3.7px"; // vagy ahány px távolságot szeretnél
+
     container.appendChild(bar);
   }
 
-  // semmi containerHeight, semmi flex, semmi alignItems
-  // csak ha tényleg szükséges, akkor maszkolunk (ez opcionális):
+  // konténer eltolása függőlegesen: csak ha kilóg
   const maskHeight = document.getElementById("histogram-custom").offsetHeight;
   const shiftY = container.offsetHeight - maskHeight;
   container.style.transform = `translateY(${shiftY}px)`;
