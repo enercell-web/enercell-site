@@ -8,17 +8,22 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
 
 
   <style>
-    html,   body {
+
+    body {
       margin: 0;
       padding: 0;
+      overflow: hidden;
       background-color: #121212;
       background-image: url("/static/grid_background_soft.png");
       background-repeat: repeat;
       background-size: 50px 50px;
-      height: 100%;
+      max-width: 99%;
+      max-height: 99%;
       font-family: 'Roboto', sans-serif;
       position: relative;
     }
@@ -40,14 +45,14 @@
   }
 
   #main-graph-area {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
   }
 
   #container {
    width: 100vw;
-   height: 100 %;
+   height: 100%;
    transform-origin: top left;
    position: absolute;
   }
@@ -55,7 +60,7 @@
   #chart {
     width: 93.96vw;
     height: 57.45vh;
-    margin-left: 0.10vw;
+    margin-left: 0.01vw;
     margin-top: 7.06vh;
     background: transparent;
     position: absolute;
@@ -65,21 +70,20 @@
   #profit-chart {
     position: absolute;
     top: 37.20vh;
-    left: 0.26vw;
+    left: 0.01vw;
     width: 92.7vw;
     height: 37.0vh;
     z-index: 1;
     pointer-events: none;
   }
 
-
   #price-scale {
     position: absolute;
     top: 2.57vh;
-    right: 1.04vw;
-    width: 5.21vw;
-    height: 91.21vh;
-    background: transparent;
+    left: 92.83vw;
+    width: 5.41vw;
+    height: 90.21vh;
+    background: transparent ;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     font-size: 1.67vw;
@@ -90,30 +94,46 @@
     align-items: flex-start;
     pointer-events: none;
     z-index: 2;
-    padding-left: 0.52vw;
+    padding-left: 0.0vw;
+    align-items: flex-end;
+
   }
 
+
+    /* --- PÖCÖK szabály hozzáadva --- */
+  #price-scale div:not(#vertical-line):not(#vertical-fade-top):not(#vertical-fade-bottom)::before {
+  content: "";
+  display: inline-block;
+  width: 0.78vw;
+  height: 0.2vh;
+  background-color: #26a69a;
+  margin-right: 0.5vw;
+  position: relative;
+  top: -0.1vh;
+  left: 0.0vw;
+}
 
    #vertical-line {
     position: absolute;
     top: 2.85vh;
-    left: -0.42vw;
+    left: 0.0vw;
     height: 88.41vh;
     width: 0.10vw;
     background-color: #00f0ff;
     z-index: 2;
-  }
+    
 
+  }
 
   #vertical-fade-top {
     position: absolute;
-    top: -1.65vh; /* finoman állítsd be */
-    left: -0.42vw; /* középre igazítva a vonalhoz */
+    top: -2.0vh; /* finoman állítsd be */
+    left: 0.00vw; /* középre igazítva a vonalhoz */
     width: 0.1vw;
-    height: 4.5vh;
+    height: 5.5vh;
     background: linear-gradient(to top,
       rgba(0, 240, 255, 1.0),
-      rgba(0, 240, 255, 0.0)
+      rgba(0, 240, 255, 0.2)
     );
     z-index: 5;
   }
@@ -121,9 +141,9 @@
   #vertical-fade-bottom {
     position: absolute;
     top: 91vh; /* igazítsd a vízszintes vonalhoz */
-    left: -0.42vw;
+    left: 0.0vw;
     width: 0.1vw;
-    height: 6.5vh;
+    height: 5.5vh;
     background: linear-gradient(to bottom,
       rgba(0, 240, 255, 1.0),
       rgba(0, 240, 255, 0.2)
@@ -208,19 +228,6 @@
     display: none;
   }
 
-    /* --- PÖCÖK szabály hozzáadva --- */
-  #price-scale div:not(#vertical-line):not(#vertical-fade-top):not(#vertical-fade-bottom)::before {
-    content: "";
-    display: inline-block;
-    width: 0.78vw;
-    height: 0.2vh;
-    background-color: #26a69a;
-    margin-right: 0.1vw;
-    position: relative;
-    top: -0.81vh;
-    left: -0.94vw;
-  }
-
        /* profit szövegdobozok alapbeállítása */
   #profit-display, #total-profit-display {
     position: absolute;
@@ -283,19 +290,7 @@
     color: #1fc8db;
   }
 
-  #tooltip {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.5);  /* áttetsző fekete */
-  color: #ffffff;
-  padding: 0.5vh 1vw;
-  border-radius: 5px;
-  font-size: 1.4vh;
-  pointer-events: none;
-  z-index: 10;
-  white-space: nowrap;
-  transform: translate(-50%, -50%);
-  display: none;
-  }
+  
 
   #stored-value-display {
     position: absolute;
@@ -354,7 +349,7 @@
     position: absolute;
     top: 12.3%;
     left: 12.9%;
-    transform: none;
+    transform: translateY(6%);
     z-index: 0;
     pointer-events: none;
     text-align: center;
@@ -381,14 +376,14 @@
   }
 
   .energy-sub {
-    //top: 50%;
-    //left: 41%;
-    font-family: 'Orbitron', sans-serif; /* futurisztikus, tech-hatású */
-    font-size: 3.8vw;
+    top: 25%;
+    left: 41%;
+    font-family: 'Poppins', sans-serif; /* futurisztikus, tech-hatású */
+    font-size: 8.8vw;
     color: rgba(255, 255, 255, 0.12);  /* szellemszerű, finom */
     letter-spacing: 0.3vw;
     margin-top: 0vw;
-    margin-bottom: 8vw; /* vagy px, pl. 20px */
+    margin-bottom: 3.55vw; /* vagy px, pl. 20px */
   }
 
   #footer-info {
@@ -418,6 +413,42 @@
   }
 
 
+  #profit-display,
+    #revenue-display,
+    #time-scale,
+     .energy-sub,
+     .energy-number,
+     .energy-unit {
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+  }
+
+   .price-tick {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;  /* ⬅️ Ez a kulcs */
+      font-size: 1.3vw;
+      text-align: left;
+      padding-left: 0;
+      color: #00f0ff;
+      position: relative;     /* ⬅️ EZ A KULCS!!! */
+    }
+
+   .price-tick::before {
+    content: "";
+    position: relative;
+    
+    left: -3.0vw;                  /* ⬅️ induljon a bal szélről */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0.78vw;
+    height: 0.2vh;
+    background-color: #26a69a;
+  }
+
+
+
 
 
   </style>
@@ -439,7 +470,7 @@
 
 
 <div id="background-energy-value">
-  <div class="energy-sub">Logic Core</div>
+  <div class="energy-sub">EnerCell</div>
   <span class="energy-number">197.4</span>
   <span class="energy-unit">MWh</span>
 </div>
@@ -532,12 +563,9 @@
 
 </script>
 
-<script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
 
-<script>
-console.log('Aktuális szélesség:', window.innerWidth);
-console.log('Aktuális magasság:', window.innerHeight);
-let formattedHistogramData = [];
+
+<script>let formattedHistogramData = [];
 
 const candlestickChart = LightweightCharts.createChart(document.getElementById('chart'), {
   layout: {
@@ -638,6 +666,9 @@ const profitChart = LightweightCharts.createChart(document.getElementById('profi
     pinch: true,
   }
 });
+
+
+
 // 🔵 ÚJ: külön histogram chart az oszlopoknak
 
 const histogramTooltip = document.getElementById('histogram-tooltip');
@@ -747,11 +778,11 @@ async function fetchData() {
     if (json.energy_price !== undefined) {
       document.getElementById('price-value').textContent = json.energy_price.toFixed(2).replace('.', ',');
     }
-
-    if (json.current_profit !== undefined) {
-    document.getElementById('profit-value').textContent = json.current_profit.toFixed(2).replace('.', ',');
-    }
-
+    const profitElem = document.getElementById('profit-value');if (typeof json.current_profit === 'number' && !isNaN(json.current_profit)) {
+      profitElem.textContent = json.current_profit.toFixed(2).replace('.', ',');
+    } else {
+      profitElem.textContent = "0,00";
+}
     if (json.total_cash !== undefined) {
       document.getElementById('total-profit-value').textContent = json.total_cash.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
@@ -802,7 +833,12 @@ function updatePriceScale() {
 
     const div = document.createElement('div');
     const distance = Math.abs(offset);
+    div.className = 'price-tick';
     div.textContent = label;
+    //div.style.position = 'absolute';
+    div.style.left = '0';
+    div.style.width = '100%';
+    div.style.textAlign = 'left';
     div.style.opacity = (1 - distance * 0.15).toFixed(2);
     div.style.transform = `scale(${(1 - distance * 0.1).toFixed(2)})`;
     div.style.transformOrigin = 'center center';
